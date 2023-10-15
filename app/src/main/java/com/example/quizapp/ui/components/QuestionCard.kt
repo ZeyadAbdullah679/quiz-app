@@ -28,6 +28,7 @@ fun QuestionCard(
     type: String,
     difficulty: String,
     question: String,
+    lives: Int,
 ) {
     Card(
         modifier = Modifier
@@ -51,7 +52,12 @@ fun QuestionCard(
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
-                Text(text = "Score: $score", style = MaterialTheme.typography.titleMedium)
+                Column {
+                    Text(text = "Score: $score", style = MaterialTheme.typography.titleMedium)
+
+                    Text(text = "Lives: $lives", style = MaterialTheme.typography.titleMedium)
+
+                }
             }
 
 
@@ -80,7 +86,8 @@ fun QuestionCardPreview() {
             score = 0,
             type = "Art",
             difficulty = "Easy",
-            question = "Why so serious?"
+            question = "Why so serious?",
+            lives = 3
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.quiz
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +20,8 @@ class QuizViewModel : ViewModel() {
             type = "",
             difficulty = "",
             totalQuestions = 0,
-            answerState = false
+            answerState = false,
+            isCorrect = false
         )
     )
     val uiState: MutableState<QuizUiState> = _uiState
@@ -34,11 +35,14 @@ class QuizViewModel : ViewModel() {
             }
             _uiState.value = _uiState.value.copy(
                 totalQuestions = _uiState.value.totalQuestions + 1,
-                answerState = true
+                answerState = true,
+                isCorrect = true
             )
         } else {
             _uiState.value = _uiState.value.copy(
-                answerState = true
+                answerState = true,
+                isCorrect = false,
+                tries = _uiState.value.tries - 1
             )
         }
     }
@@ -46,7 +50,7 @@ class QuizViewModel : ViewModel() {
 
     fun getQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = QuizApi.retrofitService.getQuestion(1)
+            val response = QuizApi.retrofitService.getQuestion(1, 18)
             val parsedResponse = parseHtml(response)
             _uiState.value = _uiState.value.copy(
                 question = parsedResponse.results[0].question,
@@ -85,7 +89,8 @@ class QuizViewModel : ViewModel() {
             type = "",
             difficulty = "",
             totalQuestions = 0,
-            answerState = false
+            answerState = false,
+            isCorrect = false
         )
     }
 }

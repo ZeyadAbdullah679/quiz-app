@@ -1,5 +1,6 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +34,11 @@ fun HomeScreen(
     highestScore: Int,
     onNameChange: (String) -> Unit,
     onClickStartQuiz: () -> Unit,
+    onPressBack: () -> Unit
 ) {
+    BackHandler {
+        onPressBack()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,34 +57,36 @@ fun HomeScreen(
         Text(
             text = "Quizzard",
             style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "\uD83C\uDF1F Highest Score in the App! \uD83C\uDF1F", // Display the highest score here
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.weight(1f))
+        if (highestScoreName.isNotEmpty()) {
+            Text(
+                text = "\uD83C\uDF1F Highest Score in the App! \uD83C\uDF1F", // Display the highest score here
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = highestScoreName,
-            style = TextStyle(
-                fontSize = 40.sp,
-                fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
-        )
-        Text(
-            text = "$highestScore",
-            style = TextStyle(
-                fontSize = 50.sp,
-                fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
-        )
+            Text(
+                text = highestScoreName,
+                style = TextStyle(
+                    fontSize = 40.sp,
+                    fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+            )
+            Text(
+                text = "$highestScore",
+                style = TextStyle(
+                    fontSize = 50.sp,
+                    fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
 
         NameEditText(value = name, onValueChange = onNameChange)
@@ -108,6 +115,8 @@ fun HomeScreenPreview() {
             highestScore = 120,
             highestScoreName = "Zeyad",
             onNameChange = {},
-            onClickStartQuiz = {})
+            onClickStartQuiz = {},
+            onPressBack = {}
+        )
     }
 }

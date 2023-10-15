@@ -1,4 +1,4 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

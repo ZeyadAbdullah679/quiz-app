@@ -1,4 +1,4 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.result
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +37,7 @@ fun ResultScreen(
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation_lnrjukkt))
     val progress by animateLottieCompositionAsState(composition)
+    val compositionCup by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation_lnrnh0xo))
     BackHandler {
         onRestartQuiz()
     }
@@ -43,36 +45,40 @@ fun ResultScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        LottieAnimation(
+            composition = compositionCup,
+            modifier = Modifier.size(250.dp)
+        )
         Text(
             text = "Quiz Results",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "Name: $name",
+            style = MaterialTheme.typography.bodyLarge
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Name: $name",
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
             text = "Score: $score",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Text(
             text = "Total Questions: $totalQuestions",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.bodyLarge
         )
+        Spacer(modifier = Modifier.weight(1f))
+
 
         Spacer(modifier = Modifier.height(32.dp))
 

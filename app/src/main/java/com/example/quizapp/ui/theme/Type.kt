@@ -24,6 +24,13 @@ val Typography = Typography(
         lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.rubik_medium)),
+        fontWeight = FontWeight.Medium,
+        fontSize = 26.sp,
+        lineHeight = 32.sp,
+        letterSpacing = 0.sp
+    ),
     titleMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.rubik_medium)),
         fontWeight = FontWeight.Medium,

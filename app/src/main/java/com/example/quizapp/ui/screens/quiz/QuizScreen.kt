@@ -1,5 +1,6 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.quiz
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,12 +16,17 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.quizapp.R
 import com.example.quizapp.ui.components.QuestionCard
 import com.example.quizapp.ui.theme.QuizAppTheme
 
@@ -28,8 +34,17 @@ import com.example.quizapp.ui.theme.QuizAppTheme
 fun QuizScreen(
     uiState: QuizUiState,
     onAnswerSelected: (String) -> Unit,
-    onClickNext: () -> Unit
+    onClickNext: () -> Unit,
+    onClickResults: () -> Unit,
+    onRestartQuiz: () -> Unit
 ) {
+    val compositionIncorrect by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation_lnrketr5))
+    val compositionCorrect by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation_lnrkff29))
+    val progressIncorrect by animateLottieCompositionAsState(compositionIncorrect)
+    val progressCorrect by animateLottieCompositionAsState(compositionCorrect)
+    BackHandler {
+        onRestartQuiz()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,7 +56,8 @@ fun QuizScreen(
             score = uiState.score,
             type = uiState.type,
             difficulty = uiState.difficulty,
-            question = uiState.question
+            question = uiState.question,
+            lives = uiState.tries
         )
         Spacer(modifier = Modifier.height(20.dp))
         LazyColumn(
@@ -52,13 +68,15 @@ fun QuizScreen(
             items(uiState.choices.size) { index ->
                 Button(
                     onClick = {
-                        onAnswerSelected(uiState.choices[index])
-                        uiState.answerState = true
+                        if (!uiState.answerState) {
+                            onAnswerSelected(uiState.choices[index])
+                            uiState.answerState = true
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (uiState.answerState) {
                             if (uiState.choices[index] == uiState.correctChoice) {
-                                Color.Green
+                                MaterialTheme.colorScheme.secondary
                             } else {
                                 MaterialTheme.colorScheme.error
                             }
@@ -81,18 +99,30 @@ fun QuizScreen(
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        Button(
-            onClick = {
-                onClickNext()
-                uiState.answerState = false
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "Next Question",
-                style = MaterialTheme.typography.headlineMedium
-            )
+        if (uiState.answerState && uiState.isCorrect) {
+            LottieAnimation(composition = compositionCorrect, progress = { progressCorrect })
+        } else if (uiState.answerState && !uiState.isCorrect) {
+            LottieAnimation(composition = compositionIncorrect, progress = { progressIncorrect })
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        if (uiState.answerState) {
+            Button(
+                onClick = {
+                    if (uiState.tries > 0) {
+                        onClickNext()
+                        uiState.answerState = false
+                    } else {
+                        onClickResults()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = if (uiState.tries > 0) "Next Question" else "Results",
+                    style = MaterialTheme.typography.headlineMedium
+                )
+            }
         }
     }
 }
@@ -110,10 +140,13 @@ fun QuizScreenPreview() {
                 choices = listOf("True", "False"),
                 correctChoice = "True",
                 totalQuestions = 2,
-                answerState = false
+                answerState = true,
+                isCorrect = true
             ),
             onAnswerSelected = {},
-            onClickNext = {}
+            onClickNext = {},
+            onClickResults = {},
+            onRestartQuiz = {}
         )
     }
 }

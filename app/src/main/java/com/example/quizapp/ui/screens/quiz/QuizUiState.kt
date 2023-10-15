@@ -1,4 +1,4 @@
-package com.example.quizapp.ui.screens
+package com.example.quizapp.ui.screens.quiz
 
 data class QuizUiState(
     val question: String,
@@ -8,5 +8,7 @@ data class QuizUiState(
     val type: String,
     val difficulty: String,
     val totalQuestions: Int,
-    var answerState: Boolean
+    var answerState: Boolean,
+    var isCorrect: Boolean,
+    var tries: Int = 3
 )

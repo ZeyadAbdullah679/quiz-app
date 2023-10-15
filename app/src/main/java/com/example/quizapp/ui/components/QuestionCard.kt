@@ -61,7 +61,8 @@ fun QuestionCard(
                 text = question,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    lineHeight = 28.sp
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier

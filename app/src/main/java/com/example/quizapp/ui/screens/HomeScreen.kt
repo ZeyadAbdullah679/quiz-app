@@ -29,6 +29,7 @@ import com.example.quizapp.ui.theme.QuizAppTheme
 @Composable
 fun HomeScreen(
     name: String,
+    highestScoreName: String,
     highestScore: Int,
     onNameChange: (String) -> Unit,
     onClickStartQuiz: () -> Unit,
@@ -49,25 +50,37 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.size(20.dp))
         Text(
-            text = "Quiz App",
+            text = "Quizzard",
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "\uD83C\uDF1F Highest Score in the App! \uD83C\uDF1F", // Display the highest score here
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(
-            text = "$highestScore",
+            text = highestScoreName,
             style = TextStyle(
-                fontSize = 100.sp,
+                fontSize = 40.sp,
                 fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             ),
         )
+        Text(
+            text = "$highestScore",
+            style = TextStyle(
+                fontSize = 50.sp,
+                fontFamily = MaterialTheme.typography.headlineLarge.fontFamily,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+        )
+        Spacer(modifier = Modifier.weight(1f))
 
         NameEditText(value = name, onValueChange = onNameChange)
         Spacer(modifier = Modifier.size(8.dp))
@@ -90,6 +103,11 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     QuizAppTheme(useDarkTheme = true) {
-        HomeScreen("Zeyad", highestScore = 120, onNameChange = {}, onClickStartQuiz = {})
+        HomeScreen(
+            "Zeyad",
+            highestScore = 120,
+            highestScoreName = "Zeyad",
+            onNameChange = {},
+            onClickStartQuiz = {})
     }
 }

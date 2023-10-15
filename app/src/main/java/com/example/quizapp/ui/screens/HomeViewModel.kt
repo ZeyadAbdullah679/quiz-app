@@ -11,4 +11,8 @@ class HomeViewModel : ViewModel() {
     fun onNameChange(newName: String) {
         _name.value = newName
     }
+
+    fun resetName() {
+        _name.value = ""
+    }
 }

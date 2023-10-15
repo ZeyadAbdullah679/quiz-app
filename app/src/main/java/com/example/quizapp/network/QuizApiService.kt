@@ -17,7 +17,10 @@ private val retrofit = Retrofit
 
 interface QuizApiService {
     @POST("api.php")
-    suspend fun getQuestion(@Query("amount") amount: Int): QuizResponse
+    suspend fun getQuestion(
+        @Query("amount") amount: Int,
+        @Query("category") category: Int
+    ): QuizResponse
 }
 
 object QuizApi {

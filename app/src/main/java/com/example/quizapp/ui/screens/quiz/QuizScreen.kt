@@ -110,7 +110,6 @@ fun QuizScreen(
                 onClick = {
                     if (uiState.tries > 0) {
                         onClickNext()
-                        uiState.answerState = false
                     } else {
                         onClickResults()
                     }

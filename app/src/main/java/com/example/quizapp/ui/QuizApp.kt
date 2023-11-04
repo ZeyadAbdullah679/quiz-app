@@ -35,7 +35,6 @@ fun QuizApp(
     homeViewModel: HomeViewModel = remember { HomeViewModel() },
     quizViewModel: QuizViewModel = remember { QuizViewModel() },
 ) {
-    quizViewModel.getQuestion()
     val context = LocalContext.current
     val activity = context as MainActivity
     var highestScoreName by rememberSaveable {

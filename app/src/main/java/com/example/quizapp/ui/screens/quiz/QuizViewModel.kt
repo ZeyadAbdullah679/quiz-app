@@ -1,5 +1,6 @@
 package com.example.quizapp.ui.screens.quiz
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,10 @@ class QuizViewModel : ViewModel() {
     )
     val uiState: MutableState<QuizUiState> = _uiState
 
+    init {
+        getQuestion()
+    }
+
     fun onAnswerSelected(answer: String) {
         if (answer == _uiState.value.correctChoice && !_uiState.value.answerState) {
             when (uiState.value.difficulty) {
@@ -38,7 +43,7 @@ class QuizViewModel : ViewModel() {
                 answerState = true,
                 isCorrect = true
             )
-        } else {
+        } else if (answer != _uiState.value.correctChoice && !_uiState.value.answerState) {
             _uiState.value = _uiState.value.copy(
                 answerState = true,
                 isCorrect = false,
@@ -49,6 +54,10 @@ class QuizViewModel : ViewModel() {
 
 
     fun getQuestion() {
+        _uiState.value = _uiState.value.copy(
+            answerState = false,
+        )
+        Log.d("QuizViewModel", "getQuestion: ")
         viewModelScope.launch(Dispatchers.IO) {
             val response = QuizApi.retrofitService.getQuestion(1, 18)
             val parsedResponse = parseHtml(response)
@@ -58,7 +67,6 @@ class QuizViewModel : ViewModel() {
                 correctChoice = parsedResponse.results[0].correctAnswer,
                 type = parsedResponse.results[0].type,
                 difficulty = parsedResponse.results[0].difficulty,
-                answerState = false
             )
         }
     }
